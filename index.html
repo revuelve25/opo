@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="es">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tiquetsbaratos · Vuelos nacionales</title>
+    <meta name="description" content="Tiquetsbaratos · Cotiza vuelos nacionales en Colombia con atención humana y precios competitivos." />
+    
+    <style>
+      :root{
+        --bg1:#f6fbff;
+        --bg2:#eef7ff;
+        --card:#ffffff;
+        --ink:#0b1b2b;
+        --muted:#5b6b7a;
+        --line:rgba(15, 23, 42, .10);
+        --primary:#30b3fc;
+        --accent:#7ee8ff;
+        --shadow: 0 18px 55px rgba(10, 30, 60, .12);
+        --shadow2: 0 10px 30px rgba(10, 30, 60, .10);
+        --r:18px;
+        --max:1120px;
+      }
+      *{box-sizing:border-box}
+      html,body{height:100%}
+      body{
+        margin:0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+        color:var(--ink);
+        background:
+          radial-gradient(900px 450px at 10% 0%, rgba(48,179,252,.16), transparent 60%),
+          radial-gradient(900px 450px at 90% 10%, rgba(126,232,255,.18), transparent 60%),
+          linear-gradient(180deg, var(--bg1), var(--bg2));
+      }
+      a{color:inherit}
+      .wrap{max-width:var(--max); margin:0 auto; padding:0 18px;}
+      .topbar{
+        position:sticky; top:0; z-index:50;
+        backdrop-filter:saturate(140%) blur(14px);
+        background:rgba(246,251,255,.75);
+        border-bottom:1px solid var(--line);
+      }
+      .nav{
+        display:flex; align-items:center; justify-content:space-between; gap:14px;
+        padding:14px 0;
+      }
+      .brand{
+        display:flex; align-items:center; gap:10px; text-decoration:none;
+      }
+      .logo{
+        width:40px; height:40px; border-radius:14px;
+        background: conic-gradient(from 210deg, var(--primary), var(--accent), #7dd3fc, var(--primary));
+        box-shadow: var(--shadow2);
+        display:grid; place-items:center; color:#06263b; font-weight:900;
+      }
+      .brand .t1{font-weight:900; letter-spacing:.02em; text-transform:lowercase; font-size:18px}
+      .brand .t2{display:block; font-size:12px; color:var(--muted); margin-top:2px}
+      .menu{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+      .menu a{
+        text-decoration:none; font-size:14px; color:#17324a;
+        padding:8px 10px; border-radius:999px;
+        border:1px solid transparent;
+      }
+      .menu a:hover{border-color:rgba(48,179,252,.35); background:rgba(48,179,252,.10);}
+      .btn{
+        appearance:none; border:none; cursor:pointer; text-decoration:none;
+        padding:10px 14px; border-radius:999px; font-weight:700; font-size:14px;
+        display:inline-flex; align-items:center; gap:8px;
+      }
+      .btn-primary{
+        background:linear-gradient(135deg, var(--primary), var(--accent));
+        color:#06263b;
+        box-shadow: 0 14px 30px rgba(48,179,252,.22);
+      }
+      .btn-ghost{
+        background:rgba(255,255,255,.55);
+        border:1px solid rgba(48,179,252,.22);
+        color:#17324a;
+      }
+      .hero{
+        padding:26px 0 10px;
+        display:grid; grid-template-columns: 1.25fr .95fr; gap:18px;
+        align-items:stretch;
+      }
+      .hero-card{
+        background:rgba(255,255,255,.65);
+        border:1px solid var(--line);
+        border-radius: calc(var(--r) + 6px);
+        box-shadow: var(--shadow);
+        padding:22px;
+        overflow:hidden;
+        position:relative;
+      }
+      .kicker{
+        display:inline-flex; gap:8px; align-items:center;
+        padding:6px 10px; border-radius:999px;
+        background:rgba(48,179,252,.10);
+        border:1px solid rgba(48,179,252,.18);
+        color:#0b3a5a; font-size:12px; font-weight:700;
+      }
+      h1{margin:10px 0 8px; font-size: clamp(30px, 3.6vw, 44px); letter-spacing:-.035em;}
+      .lead{margin:0 0 16px; color:var(--muted); font-size:15px; line-height:1.6; max-width:58ch}
+      .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
+      .chip{
+        font-size:12px; color:#24435d;
+        background:rgba(255,255,255,.70);
+        border:1px solid rgba(15,23,42,.10);
+        padding:7px 10px; border-radius:999px;
+      }
+      .panel{
+        background:var(--card);
+        border:1px solid var(--line);
+        border-radius: calc(var(--r) + 6px);
+        box-shadow: var(--shadow);
+        padding:18px;
+      }
+      .panel h3{margin:0 0 10px; font-size:14px; color:#15344c}
+      .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+      .field label{display:block; font-size:12px; color:#355067; margin:0 0 6px; font-weight:700}
+      .control{
+        display:flex; align-items:center; gap:10px;
+        padding:10px 12px;
+        border-radius:14px;
+        border:1px solid rgba(15,23,42,.14);
+        background:rgba(246,251,255,.85);
+      }
+      .control input, .control select, .control textarea{
+        width:100%; border:none; outline:none; background:transparent;
+        font-size:14px; color:#0b1b2b;
+      }
+      .control textarea{min-height:120px; resize:vertical}
+      .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-top:12px}
+      .seg{
+        display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+      }
+      .seg input{accent-color: var(--primary);}
+      .seg label{font-size:13px; color:#24435d; font-weight:700;}
+      .note{font-size:12px; color:var(--muted); line-height:1.5}
+      .cards3{display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:14px; margin:18px 0 34px}
+      .mini{
+        background:rgba(255,255,255,.70);
+        border:1px solid var(--line);
+        border-radius: var(--r);
+        padding:14px 14px 16px;
+        box-shadow: var(--shadow2);
+      }
+      .mini .ic{font-size:20px}
+      .mini h4{margin:8px 0 6px}
+      .mini p{margin:0; color:var(--muted); font-size:13px; line-height:1.55}
+      .foot{
+        border-top:1px solid var(--line);
+        background:rgba(255,255,255,.55);
+        padding:22px 0 26px;
+      }
+      .foot-grid{display:grid; grid-template-columns: 1.3fr 1fr; gap:14px}
+      .foot small{color:var(--muted)}
+      .links{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
+      .links a{font-size:13px; color:#24435d; text-decoration:none}
+      .links a:hover{text-decoration:underline}
+      .page{
+        padding:24px 0 34px;
+      }
+      .doc{
+        background:rgba(255,255,255,.75);
+        border:1px solid var(--line);
+        border-radius: calc(var(--r) + 6px);
+        box-shadow: var(--shadow);
+        padding:20px;
+      }
+      .doc h1{font-size:30px}
+      .doc h2{margin-top:18px; font-size:18px}
+      .doc p, .doc li{color:#2b465c; line-height:1.7}
+      .doc ul{margin:10px 0 10px 18px}
+      .doc .muted{color:var(--muted); font-size:13px}
+@media (max-width: 980px){
+        .hero{grid-template-columns:1fr; }
+        .cards3{grid-template-columns:1fr;}
+        .foot-grid{grid-template-columns:1fr;}
+      }
+      @media (max-width: 720px){
+        .menu{display:none;}
+        .grid2{grid-template-columns:1fr;}
+      }
+    </style>
+
+  </head>
+  <body>
+    
+    <header class="topbar">
+      <div class="wrap">
+        <div class="nav">
+          <a class="brand" href="index.html">
+            <div class="logo">tb</div>
+            <div>
+              <div class="t1">Tiquetsbaratos</div>
+              <span class="t2">Vuelos nacionales en Colombia</span>
+            </div>
+          </a>
+          <nav class="menu" aria-label="Navegación">
+            <a href="index.html">Inicio</a>
+            <a href="contacto.html">Contacto</a>
+            <a href="terminos.html">Términos</a>
+            <a href="privacidad.html">Privacidad</a>
+            <a class="btn btn-primary" href="contacto.html">Cotizar vuelos ✈️</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+
+    <main class="wrap">
+      <section class="hero">
+        <div class="hero-card">
+          <span class="kicker">⚡ Cotiza rápido · Pagos seguros · Soporte humano</span>
+          <h1>Vuelos nacionales más <span style="background:linear-gradient(120deg,var(--primary),var(--accent)); -webkit-background-clip:text; color:transparent;">claros</span> y fáciles.</h1>
+          <p class="lead">
+            Encuentra rutas dentro de Colombia y solicita tu cotización en minutos.
+            En <strong>Tiquetsbaratos</strong> te acompañamos antes y después de comprar.
+          </p>
+
+          <div class="chips" aria-label="Beneficios">
+            <span class="chip">✅ Asesoría por WhatsApp</span>
+            <span class="chip">✅ Opciones solo ida / ida y vuelta</span>
+            <span class="chip">✅ Destinos nacionales</span>
+          </div>
+
+          <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn btn-primary" href="contacto.html">Buscar vuelos 🔍</a>
+            <a class="btn btn-ghost" href="contacto.html">Hablar con un asesor</a>
+          </div>
+
+          <div aria-hidden="true" style="position:absolute; right:-70px; top:-70px; width:260px; height:260px; border-radius:999px; background:radial-gradient(circle at 30% 30%, rgba(48,179,252,.28), transparent 58%), radial-gradient(circle at 60% 60%, rgba(126,232,255,.22), transparent 60%);"></div>
+        </div>
+
+        <aside class="panel" id="contacto.html">
+          <h3>Busca tu próximo vuelo</h3>
+          <form class="grid2" action="contacto.html" method="get">
+            <div class="field" style="grid-column:1/-1">
+              <div class="seg" role="group" aria-label="Tipo de viaje">
+                <label><input type="radio" name="tipo" value="ida_vuelta" checked> Ida y vuelta</label>
+                <label><input type="radio" name="tipo" value="solo_ida"> Solo ida</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="origen">Ciudad de origen</label>
+              <div class="control">
+                <span aria-hidden="true">🛫</span>
+                <input id="origen" name="origen" placeholder="Ej. Bogotá" required />
+              </div>
+              <div class="autocomplete-list" id="lista-origen"></div>
+</div>
+
+            <div class="field">
+              <label for="destino">Ciudad de destino</label>
+              <div class="control">
+                <span aria-hidden="true">🛬</span>
+                <input id="destino" name="destino" placeholder="Ej. Cartagena" required />
+              </div>
+              <div class="autocomplete-list" id="lista-destino"></div>
+</div>
+
+            <div class="field">
+              <label for="ida">Fecha de ida</label>
+              <div class="control">
+                <span aria-hidden="true">📅</span>
+                <input type="date" id="ida" name="ida" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="regreso">Fecha de regreso</label>
+              <div class="control">
+                <span aria-hidden="true">🔁</span>
+                <input type="date" id="regreso" name="regreso" />
+              </div>
+            </div>
+
+            <div class="field" style="grid-column:1/-1">
+              <label for="pasajeros">Pasajeros</label>
+              <div class="control">
+                <span aria-hidden="true">👥</span>
+                <select id="pasajeros" name="pasajeros">
+                  <option value="1">1 pasajero</option>
+                  <option value="2">2 pasajeros</option>
+                  <option value="3">3 pasajeros</option>
+                  <option value="4">4 pasajeros</option>
+                  <option value="5+">5 o más</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row" style="grid-column:1/-1">
+              <p class="note">Te llevamos al formulario de contacto para completar la cotización.</p>
+              <button class="btn btn-primary" type="submit">Cotizar vuelos ✈️</button>
+            </div>
+          </form>
+<p class="note" style="margin-top:10px;">
+            Tip: si eliges <strong>Solo ida</strong>, desactivamos la fecha de regreso automáticamente.
+          </p>
+        </aside>
+      </section>
+
+      <section class="cards3" aria-label="Razones para reservar">
+        <article class="mini">
+          <div class="ic" aria-hidden="true">💬</div>
+          <h4>Acompañamiento real</h4>
+          <p>Un asesor te guía en tarifas, cambios, equipaje y mejores horarios.</p>
+        </article>
+        <article class="mini">
+          <div class="ic" aria-hidden="true">🧾</div>
+          <h4>Proceso claro</h4>
+          <p>Políticas simples y pasos transparentes para que compres con confianza.</p>
+        </article>
+        <article class="mini">
+          <div class="ic" aria-hidden="true">🛡️</div>
+          <h4>Pagos seguros</h4>
+          <p>Pagas por pasarelas autorizadas con cifrado y validación del banco.</p>
+        </article>
+      </section>
+    </main>
+
+    
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="logo" aria-hidden="true" style="width:36px;height:36px;border-radius:13px;">tb</div>
+            <div>
+              <div style="font-weight:900; text-transform:lowercase;">Tiquetsbaratos</div>
+              <small>Agencia de viajes nacional en Colombia</small>
+            </div>
+          </div>
+          <div class="links">
+            <a href="terminos.html">Términos y condiciones</a>
+            <a href="privacidad.html">Políticas de privacidad</a>
+            <a href="contacto.html">Contacto</a>
+          </div>
+          <small style="display:block;margin-top:10px;">© <span id="year"></span> Tiquetsbaratos. Todos los derechos reservados.</small>
+        </div>
+        <div>
+          <small><strong>Atención</strong><br>
+          Horario: Lunes a sábado, 8:00 a.m. – 7:00 p.m.<br>
+          Email: soporte@tiquetsbaratos.site (ejemplo)<br>
+          Teléfono: +57 (604) 555-2379 (ejemplo)</small>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+
+
+    
+
+<script>
+  // Destinos nacionales (vía aérea comercial en Colombia)
+  const DESTINOS_CO_AEREOS = ['Bogotá', 'Medellín', 'Rionegro (JMC)', 'Cali', 'Barranquilla', 'Cartagena', 'Santa Marta', 'San Andrés', 'Providencia', 'Pereira', 'Armenia', 'Manizales', 'Bucaramanga', 'Cúcuta', 'Montería', 'Pasto', 'Popayán', 'Neiva', 'Ibagué', 'Villavicencio', 'Valledupar', 'Riohacha', 'Corozal (Sincelejo)', 'Yopal', 'Leticia', 'Florencia', 'San José del Guaviare', 'Puerto Asís', 'Quibdó', 'Apartadó', 'Bahía Solano', 'Nuquí', 'Tumaco', 'Arauca', 'Saravena', 'Tame', 'Mitú', 'Inírida', 'Puerto Carreño', 'La Macarena', 'Ipiales', 'Pitalito', 'Buenaventura'];
+
+  
+  function setupDropdownAutocomplete(inputId, listId) {
+    const input = document.getElementById(inputId);
+    const list = document.getElementById(listId);
+    if (!input || !list) return;
+
+    let activeIndex = -1;
+    let currentItems = [];
+
+    function closeList() {
+      list.style.display = "none";
+      list.innerHTML = "";
+      activeIndex = -1;
+      currentItems = [];
+    }
+
+    function openList() {
+      if (currentItems.length > 0) list.style.display = "block";
+      else closeList();
+    }
+
+    function render() {
+      const q = input.value.trim().toLowerCase();
+      list.innerHTML = "";
+      activeIndex = -1;
+
+      // Solo mostramos si hay al menos 2 letras
+      if (q.length < 2) {
+        closeList();
+        return;
+      }
+
+      const results = DESTINOS_CO_AEREOS
+        .filter(c => c.toLowerCase().includes(q))
+        .slice(0, 7); // pequeño: max 7
+
+      currentItems = results;
+
+      if (results.length === 0) {
+        closeList();
+        return;
+      }
+
+      results.forEach((city, idx) => {
+        const item = document.createElement("div");
+        item.className = "autocomplete-item";
+        item.textContent = city;
+
+        item.addEventListener("mousedown", (e) => {
+          // mousedown para que funcione antes del blur
+          e.preventDefault();
+          input.value = city;
+          closeList();
+        });
+
+        list.appendChild(item);
+      });
+
+      openList();
+    }
+
+    function setActive(index) {
+      const children = Array.from(list.children);
+      children.forEach(el => el.classList.remove("active"));
+      if (index >= 0 && index < children.length) {
+        children[index].classList.add("active");
+        activeIndex = index;
+      }
+    }
+
+    input.addEventListener("input", render);
+    input.addEventListener("focus", render);
+
+    input.addEventListener("keydown", (e) => {
+      if (list.style.display !== "block") return;
+
+      const max = currentItems.length - 1;
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        const next = activeIndex < max ? activeIndex + 1 : 0;
+        setActive(next);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        const prev = activeIndex > 0 ? activeIndex - 1 : max;
+        setActive(prev);
+      } else if (e.key === "Enter") {
+        if (activeIndex >= 0 && currentItems[activeIndex]) {
+          e.preventDefault();
+          input.value = currentItems[activeIndex];
+          closeList();
+        }
+      } else if (e.key === "Escape") {
+        closeList();
+      }
+    });
+
+    // Cerrar al hacer click afuera
+    document.addEventListener("mousedown", (e) => {
+      if (e.target === input || list.contains(e.target)) return;
+      closeList();
+    });
+
+    // Cerrar al perder foco (con pequeño delay)
+    input.addEventListener("blur", () => setTimeout(closeList, 120));
+  }
+
+  setupDropdownAutocomplete("origen", "lista-origen");
+  setupDropdownAutocomplete("destino", "lista-destino");
+// Fill contact form from query params (from index search)
+  (function() {
+    const q = new URLSearchParams(location.search);
+    const map = { origen:"origen", destino:"destino", ida:"ida", regreso:"regreso", pasajeros:"pasajeros" };
+    for (const k in map) {
+      const v = q.get(k);
+      const el = document.getElementById(map[k]);
+      if (v && el) el.value = v;
+    }
+    const trip = q.get("tipo");
+    if (trip) {
+      const r = document.querySelector(`input[name="tipo"][value="${trip}"]`);
+      if (r) r.checked = true;
+    }
+
+    const toggleReturn = () => {
+      const t = document.querySelector('input[name="tipo"]:checked')?.value || "ida_vuelta";
+      const regreso = document.getElementById("regreso");
+      if (!regreso) return;
+      const wrap = regreso.closest(".field") || regreso.closest(".field-group") || regreso.parentElement;
+      if (t === "solo_ida") {
+        regreso.value = "";
+        regreso.disabled = true;
+        if (wrap) wrap.style.opacity = "0.55";
+      } else {
+        regreso.disabled = false;
+        if (wrap) wrap.style.opacity = "1";
+      }
+    };
+    document.querySelectorAll('input[name="tipo"]').forEach(r => r.addEventListener("change", toggleReturn));
+    toggleReturn();
+
+    // Mejor UX: abrir calendario al click (Chrome/Edge)
+    ["ida","regreso"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      function openPicker() {
+        if (typeof el.showPicker === "function" && !el.disabled) el.showPicker();
+      }
+      el.addEventListener("click", openPicker);
+      el.addEventListener("focus", openPicker);
+    });
+  })();
+</script>
+
+
+  </body>
+</html>
